@@ -5,9 +5,18 @@ import re
 from datetime import datetime
 from typing import Dict, List, Tuple
 import threading
+import os
+import sys
+
+# Add project root to Python path
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from config.settings import GUI_SETTINGS, ENGINE_SETTINGS, PATHS
+from utils.logger import logger
 
 class AutomationSuggestionEngine:
     def __init__(self):
+        logger.info("Initializing AutomationSuggestionEngine")
         self.automation_patterns = {
             'file_operations': {
                 'keywords': ['file', 'folder', 'copy', 'move', 'rename', 'organize', 'backup'],
@@ -70,6 +79,7 @@ class AutomationSuggestionEngine:
     
     def analyze_task(self, task_description: str) -> Dict:
         """Analyze task description and suggest automation approaches"""
+        logger.info(f"Analyzing task: {task_description[:100]}...")
         task_lower = task_description.lower()
         suggestions = []
         
@@ -85,14 +95,15 @@ class AutomationSuggestionEngine:
             
             if score > 0:
                 confidence = min(score / len(info['keywords']) * 100, 100)
-                suggestions.append({
-                    'category': category,
-                    'confidence': confidence,
-                    'tools': info['tools'],
-                    'difficulty': info['difficulty'],
-                    'description': info['description'],
-                    'matched_keywords': matched_keywords
-                })
+                if confidence >= ENGINE_SETTINGS['confidence_threshold']:
+                    suggestions.append({
+                        'category': category,
+                        'confidence': confidence,
+                        'tools': info['tools'],
+                        'difficulty': info['difficulty'],
+                        'description': info['description'],
+                        'matched_keywords': matched_keywords
+                    })
         
         # Sort by confidence
         suggestions.sort(key=lambda x: x['confidence'], reverse=True)
@@ -100,8 +111,10 @@ class AutomationSuggestionEngine:
         # Estimate complexity
         complexity_score = self._estimate_complexity(task_description)
         
+        logger.info(f"Analysis complete. Found {len(suggestions)} suggestions with complexity score {complexity_score}")
+        
         return {
-            'suggestions': suggestions[:3],  # Top 3 suggestions
+            'suggestions': suggestions[:ENGINE_SETTINGS['max_suggestions']],
             'complexity_score': complexity_score,
             'estimated_time': self._estimate_time(complexity_score),
             'recommended_approach': self._recommend_approach(suggestions[0] if suggestions else None)
@@ -165,15 +178,47 @@ class AutomationSuggestionEngine:
 
 class AutomationMachineGUI:
     def __init__(self, root):
+        logger.info("Initializing GUI")
         self.root = root
-        self.root.title("Intelligent Automation Machine")
-        self.root.geometry("800x700")
-        self.root.configure(bg='#f0f0f0')
+        self.root.title(GUI_SETTINGS['window_title'])
+        self.root.geometry(GUI_SETTINGS['window_size'])
+        self.root.configure(bg=GUI_SETTINGS['background_color'])
         
         self.engine = AutomationSuggestionEngine()
         self.analysis_history = []
         
+        # Create necessary directories
+        self._create_directories()
+        
+        # Load history if exists
+        self._load_history()
+        
         self.setup_gui()
+    
+    def _create_directories(self):
+        """Create necessary directories for the application"""
+        for path in [PATHS['backup_dir'], PATHS['temp_dir'], os.path.dirname(PATHS['history_file'])]:
+            if not os.path.exists(path):
+                os.makedirs(path)
+    
+    def _load_history(self):
+        """Load analysis history from file"""
+        try:
+            if os.path.exists(PATHS['history_file']):
+                with open(PATHS['history_file'], 'r') as f:
+                    self.analysis_history = json.load(f)
+                logger.info(f"Loaded {len(self.analysis_history)} history entries")
+        except Exception as e:
+            logger.error(f"Error loading history: {str(e)}")
+    
+    def _save_history(self):
+        """Save analysis history to file"""
+        try:
+            with open(PATHS['history_file'], 'w') as f:
+                json.dump(self.analysis_history[-ENGINE_SETTINGS['max_history_entries']:], f)
+            logger.info("History saved successfully")
+        except Exception as e:
+            logger.error(f"Error saving history: {str(e)}")
     
     def setup_gui(self):
         # Main title
@@ -372,9 +417,14 @@ class AutomationMachineGUI:
             history_text.insert(tk.END, "-"*50 + "\n\n")
 
 def main():
-    root = tk.Tk()
-    app = AutomationMachineGUI(root)
-    root.mainloop()
+    try:
+        logger.info("Starting Automation Machine")
+        root = tk.Tk()
+        app = AutomationMachineGUI(root)
+        root.mainloop()
+    except Exception as e:
+        logger.error(f"Application error: {str(e)}")
+        messagebox.showerror("Error", f"An error occurred: {str(e)}")
 
 if __name__ == "__main__":
     main()
