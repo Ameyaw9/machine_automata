@@ -38,15 +38,6 @@ python applications/auto_system.py
    - Implementation steps
 5. Use the History button to view past analyses
 
-## Project Structure
-
-```
-.
-├── applications/
-│   └── auto_system.py    # Main application file
-├── requirements.txt      # Project dependencies
-└── README.md            # Project documentation
-```
 
 ## Features
 
