@@ -4,9 +4,9 @@ import ResultsPanel from '@/components/ResultsPanel'
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-background text-foreground relative z-10">
+    <div className="min-h-screen bg-background text-foreground">
       <DashboardHeader />
-      <main className="flex flex-col gap-8 p-8 max-w-7xl mx-auto relative z-10">
+      <main className="flex flex-col gap-8 p-8 max-w-7xl mx-auto">
         <div>
           <h1 className="text-3xl font-light text-foreground mb-2">Workflow Builder</h1>
           <p className="text-sm text-muted-foreground font-light">Define and deploy automation workflows</p>
