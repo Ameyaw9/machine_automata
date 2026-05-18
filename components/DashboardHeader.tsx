@@ -1,31 +1,28 @@
 'use client'
 
-import { Settings, History, Zap } from 'lucide-react'
+import { Menu, Settings } from 'lucide-react'
 
 export default function DashboardHeader() {
   return (
-    <header className="border-b border-border bg-background/80 backdrop-blur-sm sticky top-0 z-50">
-      <div className="flex items-center justify-between p-6 max-w-7xl mx-auto">
+    <header className="border-b border-border bg-background sticky top-0 z-50">
+      <div className="flex items-center justify-between px-8 py-4 max-w-full">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
-            <Zap className="w-6 h-6 text-primary-foreground" />
-          </div>
-          <div>
-            <h1 className="text-2xl font-bold text-foreground">Machine Automata</h1>
-            <p className="text-sm text-muted-foreground">Intelligent Task Automation</p>
+          <div className="flex items-baseline gap-2">
+            <span className="text-xl font-light tracking-tight text-foreground">automata</span>
+            <span className="text-xs uppercase tracking-widest text-muted-foreground font-medium">system</span>
           </div>
         </div>
         
-        <div className="flex items-center gap-4">
-          <button className="flex items-center gap-2 px-4 py-2 rounded-md hover:bg-muted/50 transition-colors text-muted-foreground hover:text-foreground">
-            <History className="w-4 h-4" />
-            <span className="text-sm">History</span>
-          </button>
-          <button className="flex items-center gap-2 px-4 py-2 rounded-md hover:bg-muted/50 transition-colors text-muted-foreground hover:text-foreground">
+        <nav className="flex items-center gap-8">
+          <div className="flex gap-6 text-sm">
+            <a href="#" className="text-muted-foreground hover:text-foreground transition-colors font-light">Workflows</a>
+            <a href="#" className="text-muted-foreground hover:text-foreground transition-colors font-light">History</a>
+            <a href="#" className="text-muted-foreground hover:text-foreground transition-colors font-light">Logs</a>
+          </div>
+          <button className="p-2 hover:bg-muted/50 rounded transition-colors text-muted-foreground hover:text-foreground">
             <Settings className="w-4 h-4" />
-            <span className="text-sm">Settings</span>
           </button>
-        </div>
+        </nav>
       </div>
     </header>
   )

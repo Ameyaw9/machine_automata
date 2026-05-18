@@ -49,17 +49,17 @@ export default function ResultsPanel() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <ComplexityMeter complexity={mockResults.complexity} />
         
-        <div className="bg-muted/50 border border-border rounded-lg p-6">
-          <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-2">Estimated Time</h3>
-          <p className="text-3xl font-bold text-primary">{mockResults.estimatedTime}</p>
-          <p className="text-xs text-muted-foreground mt-1">for full implementation</p>
+        <div className="border border-border rounded-lg p-6 bg-background">
+          <h3 className="text-xs uppercase tracking-widest text-muted-foreground font-mono mb-3">Time Estimate</h3>
+          <p className="text-2xl font-light text-foreground">{mockResults.estimatedTime}</p>
+          <p className="text-xs text-muted-foreground mt-2 font-light">for implementation</p>
         </div>
 
-        <div className="bg-muted/50 border border-border rounded-lg p-6">
-          <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-2">Categories</h3>
+        <div className="border border-border rounded-lg p-6 bg-background">
+          <h3 className="text-xs uppercase tracking-widest text-muted-foreground font-mono mb-3">Categories</h3>
           <div className="flex flex-wrap gap-2">
             {mockResults.suggestions.map((s) => (
-              <span key={s.id} className="text-xs px-2 py-1 bg-primary/20 text-primary rounded">
+              <span key={s.id} className="text-xs px-2 py-1 bg-muted text-muted-foreground rounded font-mono">
                 {s.category}
               </span>
             ))}

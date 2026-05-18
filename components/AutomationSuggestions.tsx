@@ -1,7 +1,5 @@
 'use client'
 
-import { Zap, TrendingUp } from 'lucide-react'
-
 interface Suggestion {
   id: number
   title: string
@@ -16,38 +14,35 @@ interface AutomationSuggestionsProps {
 
 export default function AutomationSuggestions({ suggestions }: AutomationSuggestionsProps) {
   return (
-    <div className="bg-muted/50 border border-border rounded-lg p-6">
-      <div className="flex items-center gap-2 mb-6">
-        <Zap className="w-5 h-5 text-primary" />
-        <h2 className="text-lg font-semibold text-foreground">Top Automation Suggestions</h2>
-      </div>
+    <div className="border border-border rounded-lg p-6 bg-background">
+      <h2 className="text-xs uppercase tracking-widest text-muted-foreground font-mono mb-6">Recommended Workflows</h2>
 
-      <div className="space-y-4">
+      <div className="space-y-3">
         {suggestions.map((suggestion) => (
           <div
             key={suggestion.id}
-            className="bg-background/50 border border-border rounded-lg p-4 hover:border-primary/50 transition-colors cursor-pointer group"
+            className="border border-border rounded p-4 hover:bg-muted/30 transition-colors cursor-pointer group"
           >
-            <div className="flex items-start justify-between mb-2">
-              <div>
-                <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors">
+            <div className="flex items-start justify-between gap-3 mb-3">
+              <div className="flex-1">
+                <h3 className="font-medium text-foreground text-sm group-hover:text-secondary transition-colors">
                   {suggestion.title}
                 </h3>
-                <p className="text-sm text-muted-foreground mt-1">{suggestion.description}</p>
+                <p className="text-xs text-muted-foreground mt-1">{suggestion.description}</p>
               </div>
-              <span className="text-xs px-2 py-1 bg-secondary/20 text-secondary rounded whitespace-nowrap ml-2">
+              <span className="text-xs px-2 py-1 bg-muted text-muted-foreground rounded whitespace-nowrap font-mono">
                 {suggestion.category}
               </span>
             </div>
 
-            <div className="flex items-center gap-2 mt-3">
-              <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
+            <div className="flex items-center gap-2">
+              <div className="flex-1 h-1 bg-muted rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-gradient-to-r from-primary to-secondary"
+                  className="h-full bg-secondary"
                   style={{ width: `${suggestion.confidence}%` }}
                 />
               </div>
-              <span className="text-xs font-semibold text-foreground whitespace-nowrap">{suggestion.confidence}%</span>
+              <span className="text-xs text-muted-foreground whitespace-nowrap font-mono">{suggestion.confidence}%</span>
             </div>
           </div>
         ))}
