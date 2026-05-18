@@ -6,37 +6,35 @@ interface ComplexityMeterProps {
 
 export default function ComplexityMeter({ complexity }: ComplexityMeterProps) {
   const getComplexityLabel = (value: number) => {
-    if (value < 30) return 'Simple'
-    if (value < 60) return 'Moderate'
-    if (value < 85) return 'Complex'
-    return 'Very Complex'
+    if (value < 30) return 'Low'
+    if (value < 60) return 'Medium'
+    if (value < 85) return 'High'
+    return 'Very High'
   }
 
   const getComplexityColor = (value: number) => {
-    if (value < 30) return 'from-green-500 to-emerald-500'
-    if (value < 60) return 'from-yellow-500 to-amber-500'
-    if (value < 85) return 'from-orange-500 to-red-500'
-    return 'from-red-600 to-red-700'
+    if (value < 30) return 'bg-green-600'
+    if (value < 60) return 'bg-yellow-600'
+    if (value < 85) return 'bg-orange-600'
+    return 'bg-red-600'
   }
 
   return (
-    <div className="bg-muted/50 border border-border rounded-lg p-6">
-      <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-4">Complexity Assessment</h3>
-      
-      <div className="space-y-4">
-        <div className="relative h-12 bg-muted rounded-lg overflow-hidden">
-          <div
-            className={`h-full bg-gradient-to-r ${getComplexityColor(complexity)} transition-all duration-500`}
-            style={{ width: `${complexity}%` }}
-          />
-          <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-sm font-bold text-foreground mix-blend-lighten">{complexity}%</span>
-          </div>
-        </div>
+    <div className="border border-border rounded-lg p-6 bg-background">
+      <div className="mb-6">
+        <h3 className="text-xs uppercase tracking-widest text-muted-foreground font-mono mb-4">Complexity</h3>
         
-        <div>
-          <p className="text-2xl font-bold text-foreground">{getComplexityLabel(complexity)}</p>
-          <p className="text-xs text-muted-foreground mt-1">Task difficulty rating</p>
+        <div className="space-y-3">
+          <div className="relative h-2 bg-muted rounded-full overflow-hidden">
+            <div
+              className={`h-full ${getComplexityColor(complexity)} transition-all duration-500`}
+              style={{ width: `${complexity}%` }}
+            />
+          </div>
+          <div className="flex items-baseline justify-between">
+            <span className="text-2xl font-light text-foreground">{complexity}%</span>
+            <span className="text-xs text-muted-foreground">{getComplexityLabel(complexity)}</span>
+          </div>
         </div>
       </div>
     </div>
